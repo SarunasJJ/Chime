@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static org.springframework.security.core.userdetails.User.builder;
-
 @Service
 @AllArgsConstructor
 public class UserService implements UserDetailsService {
