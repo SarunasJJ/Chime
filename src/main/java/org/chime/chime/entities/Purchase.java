@@ -9,6 +9,7 @@ import org.chime.chime.entities.enums.PurchaseStatus;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -24,12 +25,19 @@ public class Purchase {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_profile_id", nullable = false)
-    private UserProfile userProfile;
+    @JoinColumn(name = "seller_profile_id", nullable = false)
+    private UserProfile sellerProfile;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "buyer_profile_id", nullable = false)
+    private UserProfile buyerProfile;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "listing_id", nullable = false)
     private Listing listing;
+
+    @Column(name = "purchase_price", nullable = false)
+    private BigDecimal purchasePrice;
 
     @Enumerated(EnumType.STRING)
     private PurchaseStatus status = PurchaseStatus.PENDING;
