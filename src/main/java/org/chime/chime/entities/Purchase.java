@@ -5,42 +5,41 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.chime.chime.entities.enums.UserRoles;
+import org.chime.chime.entities.enums.PurchaseStatus;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Getter
-@Setter
+@Entity
+@Table(name = "purchases")
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "users")
-public class User {
+@Getter
+@Setter
+public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false, unique = true)
-    private String username;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_profile_id", nullable = false)
+    private UserProfile userProfile;
 
-    @Column(nullable = false, unique = true)
-    private String email;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "listing_id", nullable = false)
+    private Listing listing;
 
-    @Column(name = "password_hash")
-    private String passwordHash;
+    @Enumerated(EnumType.STRING)
+    private PurchaseStatus status = PurchaseStatus.PENDING;
 
     @CreationTimestamp
-    @Column(name = "created_at", updatable = false,nullable = false)
-    private LocalDateTime createdAt;
+    @Column(name = "purchase_date", nullable = false)
+    private LocalDateTime purchaseDate;
 
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @Column(name = "role", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private UserRoles role = UserRoles.USER;
 }
