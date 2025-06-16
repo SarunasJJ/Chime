@@ -42,9 +42,6 @@ public class UserProfile {
     private String city;
 
     @OneToMany(mappedBy = "userProfile", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Purchase> purchaseHistory;
-
-    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Listing> listings;
 
     @CreationTimestamp

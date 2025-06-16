@@ -6,6 +6,8 @@ import org.chime.chime.dto.request.SignUpRequest;
 import org.chime.chime.dto.response.AuthResponse;
 import org.chime.chime.dto.response.UserResponse;
 import org.chime.chime.entities.User;
+import org.chime.chime.exceptions.InvalidCredentialsException;
+import org.chime.chime.exceptions.UserAlreadyExistsException;
 import org.chime.chime.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,15 +29,15 @@ public class AuthService {
 
     public AuthResponse register(SignUpRequest request) {
         if (!request.isPasswordMatching()) {
-            return AuthResponse.failure("Passwords do not match");
+            throw new InvalidCredentialsException("Passwords do not match");
         }
 
         if (userRepository.findByUsername(request.username()).isPresent()) {
-            return AuthResponse.failure("Username already exists");
+            throw new UserAlreadyExistsException("User '"+ request.username() + "' already exists");
         }
 
         if (userRepository.findByEmail(request.email()).isPresent()) {
-            return AuthResponse.failure("Account with this email already exists");
+            throw new UserAlreadyExistsException("Email already in use");
         }
 
         User user = new User();
@@ -67,7 +69,7 @@ public class AuthService {
             }
 
             if (userOpt.isEmpty()) {
-                return AuthResponse.failure("Invalid credentials");
+                throw new InvalidCredentialsException("User not found");
             }
 
             User user = userOpt.get();
@@ -87,7 +89,7 @@ public class AuthService {
             return AuthResponse.success("Login successful", userResponse, token);
 
         } catch (AuthenticationException e) {
-            return AuthResponse.failure("Invalid credentials");
+            throw new InvalidCredentialsException("Invalid username or password");
         } catch (Exception e) {
             return AuthResponse.failure("Login failed: " + e.getMessage());
         }

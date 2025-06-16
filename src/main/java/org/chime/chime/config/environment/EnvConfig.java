@@ -1,3 +1,4 @@
+/*
 package org.chime.chime.config.environment;
 
 import io.github.cdimascio.dotenv.Dotenv;
@@ -17,4 +18,4 @@ public class EnvConfig {
                 .systemProperties()
                 .load();
     }
-}
+}*/
