@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -29,7 +30,26 @@ public class Listing {
     private String description;
 
     @Column(nullable = false)
-    private BigDecimal price;
+    private String category;
+
+    @Column(nullable = false)
+    private String location;
+
+    @Column(nullable = false)
+    private BigDecimal buyoutPrice;
+
+    @Column(nullable = false)
+    private BigDecimal startingPrice;
+
+    private BigDecimal currentPrice;
+
+    private BigDecimal finalPrice;
+
+    private List<BigDecimal> bidHistory;
+
+    @Column(name = "listing_end_time", nullable = false)
+    private LocalDateTime listingEndTime;
+
 
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
